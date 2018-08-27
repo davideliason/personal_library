@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/davideliason/personal_library/issues"
   },
-  "homepage": "https://github.com/davideliason/personal_library#readme"
+  "homepage": "https://github.com/davideliason/personal_library#readme",
+  "dependencies": {
+    "mongodb": "^2.1.3"
+  }
 }

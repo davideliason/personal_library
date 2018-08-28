@@ -13,7 +13,11 @@ MongoClient.connect('mongodb://localhost:27017/personal_library', function(err, 
     assert.equal(err, null);
     console.log("Successfully connected to MongoDB.");
 
-    app.get("/", (req,res) =>{
+    app.get('/', (req,res)=>{
+        res.render('home', {'user' : "David"});
+    });
+
+    app.get("/books", (req,res) =>{
         db.collection('personal_library').find().toArray(function(err, docs) {
 
             res.render('books', { 'books' : docs});

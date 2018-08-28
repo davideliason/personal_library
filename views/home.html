@@ -4,9 +4,13 @@
 
 <p>Or, type in the search parameters in the url</p>
 
-<ul>
 
-{% for title in titles %}
-    <li>{{title}}</li>
-{% endfor %}
-</ul>
+<form action="/favorite_book" method="POST">
+    <p>favorite book</p>
+    {% for title in titles %}
+    <p>
+        <input type="radio" name="title" value="{{title}}"/>{{title}}
+    </p>
+    {% endfor %}
+    <input type="submit" value="Submit"/>
+</form>

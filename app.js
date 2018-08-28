@@ -38,7 +38,10 @@ MongoClient.connect('mongodb://localhost:27017/personal_library', function(err, 
          });
     });
 
-  
+    app.post('/favorite_book', (req,res)=>{
+        var favorite_book = req.body.title;
+        res.send("your favorite books is" + favorite_book);
+    });
 
     app.listen(8080, () => {
         console.log("listening at port 8080");

@@ -3,13 +3,16 @@ var express = require("express"),
     engines = require('consolidate'),
     MongoClient = require('mongodb').MongoClient,
     assert = require('assert'),
+    morgan = require('morgan'),
     bodyParser = require('body-parser');
 
 // middleware
 app.engine('html', engines.nunjucks);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
+app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
+
 
 MongoClient.connect('mongodb://localhost:27017/personal_library', function(err, db) {
 
@@ -40,8 +43,11 @@ MongoClient.connect('mongodb://localhost:27017/personal_library', function(err, 
 
     app.post('/favorite_book', (req,res)=>{
         var favorite_book = req.body.title;
+        db.collection('personal_library').insertOne({ "title" : favorite_book + "new", "author" : "new author"});
+        console.log("new title inserted into dob");
         res.send("your favorite books is" + favorite_book);
     });
+
 
     app.listen(8080, () => {
         console.log("listening at port 8080");

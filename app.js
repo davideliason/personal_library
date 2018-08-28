@@ -13,8 +13,10 @@ MongoClient.connect('mongodb://localhost:27017/personal_library', function(err, 
     assert.equal(err, null);
     console.log("Successfully connected to MongoDB.");
 
-    app.get('/', (req,res)=>{
-        db.collection('personal_library').find({}).toArray(function(err, docs) {
+    app.get('/book/:title', (req,res)=>{
+
+        var title_query = req.params.title;
+        db.collection('personal_library').find({"title" : title_query}).toArray(function(err, docs) {
 
             res.render('book', { 'books' : docs});
            

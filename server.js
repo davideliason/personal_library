@@ -6,8 +6,9 @@ app.engine('html', engines.nunjucks);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 
-app.get('/', function(req,res){
-    res.render('book', { title : 'Test Title'});
+app.get('/book/:title', function(req,res, next){
+    var title = req.params.title;
+    res.render('book', { title : title});
 });
 
 app.use(function(req, res){

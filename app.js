@@ -29,6 +29,18 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+var users = {
+    "id1" : {
+        id: 1,
+        username : "david",
+        password: "hello"
+    },
+    "id2" : {
+        id: 2,
+        username: "tom",
+        password: "goodbye"
+    }
+};
 
 
 MongoClient.connect('mongodb://localhost:27017/personal_library', function(err, db) {

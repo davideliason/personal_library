@@ -5,14 +5,17 @@ var express = require("express"),
     assert = require('assert'),
     morgan = require('morgan'),
     session = require('express-session'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    passport = require('passport'),
+    cookieParser = require('cookie-parser'),
+    LocalStrategy = require('passport-local').Strategy;
+
 
 // middleware
 app.engine('html', engines.nunjucks);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(session({ secret: 'this-is-a-secret-token', 
                   cookie: { maxAge: 60000 },
@@ -20,6 +23,12 @@ app.use(session({ secret: 'this-is-a-secret-token',
                   resave: false
                  }
                 ));
+app.use(cookieParser('this-is-a-secret-token'));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 
 
 MongoClient.connect('mongodb://localhost:27017/personal_library', function(err, db) {

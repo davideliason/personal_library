@@ -42,6 +42,37 @@ var users = {
     }
 };
 
+passport.use(new LocalStrategy(
+    function (username, password, done) {
+        for (userid in users) {
+            var user = users[userid];
+            if (user.username.toLowerCase() == username.toLowerCase()) {
+                if(user.password == password) {
+                    return done (null, user);
+                }
+            }
+        }
+    }
+))
+
+passport.serializeUser(function (user, done) {
+    if (users["id" + user.id]) {
+        done(null, "id" + user.id);
+    }
+    else {
+        done (new Error("cannot_serialize_invalid_user"));
+    }
+});
+
+passport.deserializeUser(function(userid, done) {
+    if (users[userid]) {
+        done(null, users[userid]);
+    }
+    else {
+        done (new Error("cannot_find_user_to_deserialize"));
+    }
+})
+
 
 MongoClient.connect('mongodb://localhost:27017/personal_library', function(err, db) {
 
@@ -79,6 +110,12 @@ MongoClient.connect('mongodb://localhost:27017/personal_library', function(err, 
         console.log("new title inserted into dob");
         res.send("your favorite books is" + favorite_book);
     });
+
+    app.post('/login',
+  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/login',
+                                   failureFlash: true })
+);
 
 
     app.listen(8080, () => {

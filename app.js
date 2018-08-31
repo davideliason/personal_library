@@ -25,6 +25,13 @@ MongoClient.connect('mongodb://localhost:27017/', function(err,db){
 
     });
 
+    app.get('/json', (req,res) => {
+        dbo.collection('mybooks').find().toArray((err,docs)=>{
+            res.json(docs);
+        });
+
+    });
+
     app.get('/index', (req,res) => {
         res.render('index', {"user" : "username"});
     });

@@ -15,6 +15,8 @@ MongoClient.connect('mongodb://localhost:27017/', function(err,db){
     app.get('/', (req,res) => {
         dbo.collection('mybooks').find().toArray((err,docs)=>{
             console.log(docs);
+            res.render('books', {'books' : docs});
+            
         });
 
     });

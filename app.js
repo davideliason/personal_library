@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 MongoClient.connect('mongodb://localhost:27017/', function(err,db){
     var dbo = db.db('personal_library');
 
+    // RETRIEVE
     app.get('/', (req,res) => {
         dbo.collection('mybooks').find().toArray((err,docs)=>{
             console.log(docs);
@@ -24,10 +25,15 @@ MongoClient.connect('mongodb://localhost:27017/', function(err,db){
 
     });
 
+    app.get('/index', (req,res) => {
+        res.render('index', {"user" : "username"});
+    });
+
     app.get('/newbook',(req,res)=>{
         res.render('newbook', { "title" : "Add new book"});
     });
 
+    // CREATE
     app.post('/addbook', (req,res)=>{
         var newTitle = req.body.newtitle;
         var newAuthor = req.body.newauthor;

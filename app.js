@@ -15,9 +15,14 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: false }));
 
-MongoClient.connect(url, function(err,db){
-    // var dbo = db.db('personal_library');
-    console.log("db connected");
+const assert = require('assert');
+const dbName = 'personal_library';
+
+MongoClient.connect(url, function(err,client){
+   
+    if (err) return console.log(err)
+    db = client.db('personal_library')
+  
 
     // RETRIEVE
     app.get('/', (req,res) => {
@@ -51,7 +56,7 @@ MongoClient.connect(url, function(err,db){
 
         console.log("okay posted" + newTitle + " " + newAuthor);
 
-        dbo.collection('mybooks').insertOne({
+        db.collection('mybooks').insertOne({
             "title" : newTitle,
             "author" : newAuthor
         },(err,doc)=>{

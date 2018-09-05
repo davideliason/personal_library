@@ -5,6 +5,9 @@ var logger = require('morgan');
 var MongoClient = require('mongodb').MongoClient;
 var engines = require('consolidate');
 var bodyParser = require('body-parser');
+var dotenv = require('dotenv');
+dotenv.config();
+var url = process.env.MONGOLAB_URI;
 
 app.engine('html', engines.nunjucks);
 app.set('view engine', 'html');
@@ -12,12 +15,13 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: false }));
 
-MongoClient.connect('mongodb://localhost:27017/', function(err,db){
-    var dbo = db.db('personal_library');
+MongoClient.connect(url, function(err,db){
+    // var dbo = db.db('personal_library');
+    console.log("db connected");
 
     // RETRIEVE
     app.get('/', (req,res) => {
-        dbo.collection('mybooks').find().toArray((err,docs)=>{
+        db.collection('mybooks').find().toArray((err,docs)=>{
             console.log(docs);
             res.render('books', {'books' : docs});
             
@@ -26,7 +30,7 @@ MongoClient.connect('mongodb://localhost:27017/', function(err,db){
     });
 
     app.get('/json', (req,res) => {
-        dbo.collection('mybooks').find().toArray((err,docs)=>{
+        db.collection('mybooks').find().toArray((err,docs)=>{
             res.json(docs);
         });
 

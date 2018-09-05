@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var dotenv = require('dotenv');
 dotenv.config();
 var url = process.env.MONGOLAB_URI;
+var port = process.env.PORT || 8080;
 
 app.engine('html', engines.nunjucks);
 app.set('view engine', 'html');
@@ -68,6 +69,6 @@ MongoClient.connect(url, function(err,client){
     });
 });
 
-app.listen(8080, ()=>{
+app.listen(port, ()=>{
     console.log("listening at 8080");
 });
